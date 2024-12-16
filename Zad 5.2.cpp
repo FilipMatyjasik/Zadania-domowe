@@ -1,61 +1,78 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int main() {
     int n;
 
-    // Wczytanie rozmiaru tablicy
     cout << "Podaj rozmiar tablicy: ";
     cin >> n;
 
-    // Sprawdzamy, czy rozmiar tablicy jest dodatni
     if (n <= 0) {
-        cout << "Rozmiar tablicy musi byc liczba dodatnia!" << endl;
+        cout << "Rozmiarem tablicy musi byc liczba dodatnia!" << endl;
         return 1;
     }
 
-    // Tworzymy dynamiczn¹ tablicê o rozmiarze n
-    int* tablica = new int[n];
+    vector<int> tablica(n);
 
-    // Wczytanie elementów tablicy
     cout << "Podaj " << n << " liczb calkowitych:" << endl;
     for (int i = 0; i < n; ++i) {
         cin >> tablica[i];
     }
 
-    // Wyœwietlenie zawartoœci tablicy przed zamian¹ (pionowo, z podzia³em na dwie grupy)
+    vector<int> nieparzyste, parzyste;
+
+    for (int i = 0; i < n; ++i) {
+        if (tablica[i] % 2 == 0) {
+            parzyste.push_back(tablica[i]);
+        } else {
+            nieparzyste.push_back(tablica[i]);
+        }
+    }
+
+    sort(nieparzyste.begin(), nieparzyste.end());
+    sort(parzyste.begin(), parzyste.end());
+
+    vector<int> tablica_wejsciowa;
+    tablica_wejsciowa.insert(tablica_wejsciowa.end(), parzyste.begin(), parzyste.end());
+    tablica_wejsciowa.insert(tablica_wejsciowa.end(), nieparzyste.begin(), nieparzyste.end());
+
     cout << "Tablica wejsciowa:" << endl;
-    int mid = n / 2; // œrodkowy indeks, który dzieli tablicê
-    for (int i = 0; i < mid; ++i) {
-        cout << tablica[i] << "\t\t" << tablica[n - i - 1] << endl;
+    int max_size = max(parzyste.size(), nieparzyste.size());
+    for (int i = 0; i < max_size; ++i) {
+        if (i < parzyste.size()) {
+            cout << parzyste[i] << "\t";
+        } else {
+            cout << "\t";
+        }
+
+        if (i < nieparzyste.size()) {
+            cout << nieparzyste[i] << endl;
+        } else {
+            cout << endl;
+        }
     }
 
-    // Jeœli liczba elementów jest nieparzysta, wyœwietlamy œrodkowy element
-    if (n % 2 != 0) {
-        cout << tablica[mid] << endl;
-    }
+    vector<int> tablica_wyjsciowa;
+    tablica_wyjsciowa.insert(tablica_wyjsciowa.end(), nieparzyste.begin(), nieparzyste.end());
+    tablica_wyjsciowa.insert(tablica_wyjsciowa.end(), parzyste.begin(), parzyste.end());
 
-    // Zamiana miejscami elementów po przeciwnych stronach pionowej linii
-    for (int i = 0; i < mid; ++i) {
-        int temp = tablica[i];
-        tablica[i] = tablica[n - i - 1];
-        tablica[n - i - 1] = temp;
-    }
-
-    // Wyœwietlenie zawartoœci tablicy po zamianie (pionowo, z podzia³em na dwie grupy)
     cout << "Tablica wyjsciowa:" << endl;
-    for (int i = 0; i < mid; ++i) {
-        cout << tablica[i] << "\t\t" << tablica[n - i - 1] << endl;
-    }
+    for (int i = 0; i < max_size; ++i) {
+        if (i < nieparzyste.size()) {
+            cout << nieparzyste[i] << "\t";
+        } else {
+            cout << "\t";
+        }
 
-    // Jeœli liczba elementów jest nieparzysta, wyœwietlamy œrodkowy element
-    if (n % 2 != 0) {
-        cout << tablica[mid] << endl;
+        if (i < parzyste.size()) {
+            cout << parzyste[i] << endl;
+        } else {
+            cout << endl;
+        }
     }
-
-    // Zwolnienie pamiêci
-    delete[] tablica;
 
     return 0;
 }
