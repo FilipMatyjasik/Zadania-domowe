@@ -6,7 +6,7 @@ int main() {
     cout << "Podaj liczbe elementow wektora: ";
     cin >> n;
     if (n <= 0) {
-        cout << "Rozmiar wektora musi byc liczba dodatnia!" << endl;
+        cout << "Rozmiarem wektora musi byc liczba dodatnia!" << endl;
         return 1;
     }
     vector<int> wektor(n);
